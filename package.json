@@ -1,7 +1,7 @@
 {
-  "name": "Librarian",
+  "name": "looker",
   "version": "0.0.1",
-  "description": "A utility to lookup and load files or modules",
+  "description": "Looks for files, and loads or requires them",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +12,10 @@
     "fs",
     "module"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wesleytodd/looker.git"
+  },
   "author": "Wes Todd",
   "license": "ISC",
   "dependencies": {

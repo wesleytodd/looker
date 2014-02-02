@@ -1,6 +1,6 @@
 {
   "name": "looker",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Looks for files, and loads or requires them",
   "main": "index.js",
   "scripts": {

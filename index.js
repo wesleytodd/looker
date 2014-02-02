@@ -5,11 +5,12 @@ var fs = require('fs'),
 	async = require('async');
 
 // The constructor
-var Librarian = module.exports = function(options) {
+var Looker = module.exports = function(options) {
 
 	this.options = _.extend({}, {
 		defaultPriority: 500,
-		skipCache: false
+		// not implemented
+		//skipCache: false
 	}, options);
 
 	// The set of lookup paths
@@ -23,7 +24,7 @@ var Librarian = module.exports = function(options) {
 };
 
 // Add a path to the lookup list
-Librarian.prototype.lookupPath = function(lookupPath, priority) {
+Looker.prototype.lookupPath = function(lookupPath, priority) {
 	// Default priority
 	priority = (typeof priority !== 'number') ? priority : this.options.defaultPriority;
 
@@ -51,7 +52,7 @@ Librarian.prototype.lookupPath = function(lookupPath, priority) {
 };
 
 // Goes through the lookup list and checks if a file exists
-Librarian.prototype.exists = function(filename, done) {
+Looker.prototype.exists = function(filename, done) {
 
 	// Check cache
 	if (this._existsCache[filename]) {
@@ -86,7 +87,7 @@ Librarian.prototype.exists = function(filename, done) {
 };
 
 // Looks for and requires filepaths
-Librarian.prototype.require = function(filename, done) {
+Looker.prototype.require = function(filename, done) {
 
 	if (this._requireCache[filename]) {
 		// Resolve on next tick
@@ -127,7 +128,7 @@ Librarian.prototype.require = function(filename, done) {
 
 // Requires every file in a directory, return a map
 // of filename to required module
-Librarian.prototype.requireAll = function(done) {
+Looker.prototype.requireAll = function(done) {
 
 	// The list to return
 	var list = {};
@@ -180,7 +181,7 @@ Librarian.prototype.requireAll = function(done) {
 };
 
 // Reads a file from the load paths
-Librarian.prototype.readFile = function(filename, done) {
+Looker.prototype.readFile = function(filename, done) {
 
 	if (this._fileCache[filename]) {
 		// Resolve on next tick
@@ -221,7 +222,7 @@ Librarian.prototype.readFile = function(filename, done) {
 };
 
 // Try a list of file names in each path
-Librarian.prototype.tryFiles = function(files, done) {
+Looker.prototype.tryFiles = function(files, done) {
 	// The found file and it's content
 	var content, filepath;
 
@@ -245,4 +246,3 @@ Librarian.prototype.tryFiles = function(files, done) {
 	// Chainable
 	return this;
 };
-

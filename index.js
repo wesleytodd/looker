@@ -86,6 +86,34 @@ Looker.prototype.exists = function(filename, done) {
 	return this;
 };
 
+// Sync version of exists
+Looker.prototype.existsSync = function(filename) {
+
+	// Check cache
+	if (this._existsCache[filename]) {
+		return this._existsCache[filename];
+	} else {
+		// The found filepath
+		var filepath;
+
+		// Look in each directory
+		for (var i in this.lookups) {
+			// Create the filepath
+			filepath = path.resolve(path.join(this.lookups[i].path, filename));
+
+			// Check if it exists
+			if (fs.existsSync(filepath)) {
+				// Cache it and break out of loop
+				this._existsCache[filename] = filepath;
+				break;
+			}
+		}
+		// Return the found path
+		return filepath;
+	}
+
+};
+
 // Looks for and requires filepaths
 Looker.prototype.require = function(filename, done) {
 
@@ -219,6 +247,33 @@ Looker.prototype.readFile = function(filename, done) {
 
 	// Chainable
 	return this;
+};
+
+// Sync version of readFile
+Looker.prototype.readFileSync = function(filename) {
+
+	// Check in cache
+	if (this._fileCache[filename]) {
+		return this._fileCache[filename].content;
+	}
+
+	var filepath = this.existsSync(filename);
+
+	// if the file exists
+	if (filepath) {
+		// Read the file
+		var content = fs.readFileSync(filepath, {encoding: 'utf8'});
+		
+		// Cache the file
+		this._fileCache[filename] = {
+			content: content,
+			filepath: filepath
+		};
+
+		// Return the content
+		return content;
+	}
+
 };
 
 // Try a list of file names in each path

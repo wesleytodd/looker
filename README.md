@@ -56,6 +56,14 @@ look.require('index.js', function(err, module, fullPath) {
 	module.someFunc();
 });
 
+// Require a module, sync
+var m = look.requireSync('index.js');
+if (!m) {
+	// Module not found
+} else {
+	// Do something with the module
+}
+
 // Require all files the directores
 look.requireAll(function(modules) {
 

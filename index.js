@@ -145,7 +145,7 @@ Looker.prototype.require = function(filename, done) {
 			}
 			
 			// File does not exist
-			done('File does not exist');
+			done('Module does not exist');
 		}.bind(this));
 	}
 
@@ -153,6 +153,36 @@ Looker.prototype.require = function(filename, done) {
 	return this;
 };
 
+// Looks for and requires filepaths, sync
+Looker.prototype.requireSync = function(filename) {
+
+	if (this._requireCache[filename]) {
+		// Resolve on next tick
+		return this._requireCache[filename].module;
+	}
+
+	// Find the proper path
+	var filepath = this.existsSync(filename);
+
+	// Return nothing on error
+	if (!filepath) return;
+	
+	// Try to require the file
+	try {
+		// Require the filepath
+		var m = require(filepath);
+	} catch(e) {
+		return;
+	}
+	// Save to cache
+	this._requireCache[filename] = {
+		module: m,
+		modulePath: filepath
+	};
+
+	// Return with the loaded module
+	return m;
+};
 
 // Requires every file in a directory, return a map
 // of filename to required module
